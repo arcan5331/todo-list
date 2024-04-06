@@ -23,7 +23,7 @@ class TaskController extends Controller
 
     public function store(StoreTaskRequest $request)
     {
-        $task = auth()->user()->tasks()->create($request->only(['title', 'description', 'du_date']));
+        $task = auth()->user()->tasks()->create($request->only(['title', 'description', 'due_date']));
         if (isset($request->status)) {
             $this->setTaskStatus($task, $request->status);
         }
@@ -35,7 +35,7 @@ class TaskController extends Controller
     {
         $this->checkIfLoginUserAuthorized('update', $task);
 
-        $task->update($request->only(['title', 'description', 'du_date']));
+        $task->update($request->only(['title', 'description', 'due_date']));
         if (isset($request->status)) {
             $this->setTaskStatus($task, $request->status);
         }

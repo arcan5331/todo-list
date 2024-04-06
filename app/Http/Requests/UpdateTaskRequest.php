@@ -11,8 +11,8 @@ class UpdateTaskRequest extends FormRequest
         return [
             'title' => 'nullable',
             'description' => 'nullable',
-            'du_date' => 'nullable|date|after_or_equal:today',
-            'status' => 'nullable|in:todo,over_du,doing,done'
+            'due_date' => 'nullable|date|after_or_equal:today',
+            'status' => 'nullable|in:todo,over_due,doing,done'
         ];
     }
 
