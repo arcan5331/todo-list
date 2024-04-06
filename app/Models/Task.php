@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model
 {
+    public const STATUS_DONE = 1;
+    public const STATUS_TODO = 2;
+    public const STATUS_DOING = 3;
+    public const STATUS_OVER_DU = 4;
+
     protected $fillable = [
         'title',
         'description',
@@ -20,5 +25,18 @@ class Task extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function setStatus($status): static
+    {
+        $this->status = match ($status) {
+            1 => 'done',
+            2 => 'todo',
+            3 => 'doing',
+            4 => 'over_du',
+            default => 'todo',
+        };
+        $this->save();
+        return $this;
     }
 }
