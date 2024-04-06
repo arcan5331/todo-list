@@ -20,3 +20,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::apiResource('tasks', \App\Http\Controllers\TaskController::class, ['middleware' => 'auth:sanctum']);
+
+
+Route::group([
+    'prefix' => 'auth',
+    'controller' => \App\Http\Controllers\AuthController::class,
+], function () {
+    Route::post('/register', 'register');
+    Route::post('/login', 'login');
+    Route::post('/logout', 'logout')->middleware('auth:sanctum');
+});
