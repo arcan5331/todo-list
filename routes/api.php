@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::apiResource('tasks', \App\Http\Controllers\TaskController::class, ['middleware' => 'auth:sanctum']);
-
+Route::apiResource('tags', \App\Http\Controllers\TagController::class, ['middleware' => 'auth:sanctum']);
 
 Route::group([
     'prefix' => 'auth',
