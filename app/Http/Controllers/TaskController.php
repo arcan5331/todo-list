@@ -17,12 +17,13 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        $this->checkIfLoginUserAuthorized('view', $task);
+        $this->authorize('view', $task);
         return $task;
     }
 
     public function store(StoreTaskRequest $request)
     {
+        $this->authorize('create', Task::class);
         $task = auth()->user()->tasks()->create($request->only(['title', 'description', 'due_date']));
         if (isset($request->status)) {
             $this->setTaskStatus($task, $request->status);
@@ -38,7 +39,7 @@ class TaskController extends Controller
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        $this->checkIfLoginUserAuthorized('update', $task);
+        $this->authorize('update', $task);
 
         $task->update($request->only(['title', 'description', 'due_date']));
         if (isset($request->status)) {
@@ -55,17 +56,12 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        $this->checkIfLoginUserAuthorized('delete', $task);
+        $this->authorize('delete', $task);
         $task->delete();
 
         return response()->noContent();
     }
 
-
-    private function checkIfLoginUserAuthorized($ability, Model $model)
-    {
-        auth()->user()->can($ability, $model) ?: abort(403);
-    }
 
     private function setTaskStatus(Task $task, $status)
     {

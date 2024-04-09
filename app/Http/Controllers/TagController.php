@@ -16,13 +16,13 @@ class TagController extends Controller
 
     public function show(Tag $tag)
     {
-        $this->checkIfLoginUserAuthorized('view', $tag);
+        $this->authorize('view', $tag);
         return $tag;
     }
 
     public function store(StoreTagRequest $request)
     {
-        $this->checkIfLoginUserAuthorized('create', Tag::class);
+        $this->authorize('create', Tag::class);
 
         return
             $request->user()->tags()->create([
@@ -33,7 +33,7 @@ class TagController extends Controller
 
     public function update(UpdateTagRequest $request, Tag $tag)
     {
-        $this->checkIfLoginUserAuthorized('update', $tag);
+        $this->authorize('update', $tag);
 
         $tag->update($request->validated());
 
@@ -42,17 +42,10 @@ class TagController extends Controller
 
     public function destroy(Tag $tag)
     {
-        $this->checkIfLoginUserAuthorized('delete', $tag);
+        $this->authorize('delete', $tag);
 
         $tag->delete();
 
         return response()->noContent();
     }
-
-
-    private function checkIfLoginUserAuthorized($ability, $model)
-    {
-        auth()->user()->can($ability, $model) ?: abort(403);
-    }
-
 }
