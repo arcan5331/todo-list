@@ -28,6 +28,11 @@ class TaskController extends Controller
             $this->setTaskStatus($task, $request->status);
         }
 
+        if (isset($request->tags)) {
+            $task = $this->syncTaskWithTags($task, $request->tags);
+        }
+
+        $task->load('tags');
         return $task;
     }
 
@@ -40,6 +45,11 @@ class TaskController extends Controller
             $this->setTaskStatus($task, $request->status);
         }
 
+        if (isset($request->tags)) {
+            $task = $this->syncTaskWithTags($task, $request->tags);
+        }
+
+        $task->load('tags');
         return $task;
     }
 
@@ -61,6 +71,12 @@ class TaskController extends Controller
     {
         $status = 'STATUS_' . strtoupper($status);
         return $task->setStatus(constant(Task::class . '::' . $status));
+    }
+
+    private function syncTaskWithTags(Task $task, array $tags)
+    {
+        $task->tags()->sync($tags);
+        return $task;
     }
 
 }
