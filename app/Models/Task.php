@@ -13,6 +13,7 @@ class Task extends Model
     public const STATUS_OVER_DUE = 4;
 
     protected $fillable = [
+        'user_id',
         'title',
         'description',
         'due_date',
