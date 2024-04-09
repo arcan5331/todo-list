@@ -27,6 +27,8 @@ class Task extends Model
         'due_date' => 'date',
     ];
 
+    protected $with = ['tags'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
