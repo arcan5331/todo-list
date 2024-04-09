@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->date('due_date');
             $table->foreignIdFor(\App\Models\User::class);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
