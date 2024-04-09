@@ -30,10 +30,10 @@ class Task extends Model
     public function setStatus($status): static
     {
         $this->status = match ($status) {
-            1 => 'done',
-            2 => 'todo',
-            3 => 'doing',
-            4 => 'over_due',
+            self::STATUS_DONE => 'done',
+            self::STATUS_TODO => 'todo',
+            self::STATUS_DOING => 'doing',
+            self::STATUS_OVER_DUE => 'over_due',
             default => 'todo',
         };
         $this->save();
