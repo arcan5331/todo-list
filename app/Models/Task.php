@@ -45,6 +45,12 @@ class Task extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function syncTags(array|Tag $tags): static
+    {
+        $this->tags()->sync($tags);
+        return $this;
+    }
+
     public function setStatus($status): static
     {
         $this->status = match ($status) {

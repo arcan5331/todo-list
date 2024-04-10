@@ -32,9 +32,8 @@ class TaskController extends Controller
             $this->setTaskStatus($task, $request->status);
         }
 
-        if (isset($request->tags)) {
-            $task = $this->syncTaskWithTags($task, $request->tags);
-        }
+
+        $this->initializeTaskTags($task, $request);
 
         $task->load('tags');
         return $task;
@@ -51,9 +50,7 @@ class TaskController extends Controller
             $this->setTaskStatus($task, $request->status);
         }
 
-        if (isset($request->tags)) {
-            $task = $this->syncTaskWithTags($task, $request->tags);
-        }
+        $this->initializeTaskTags($task, $request);
 
         $task->load('tags');
         return $task;
@@ -74,10 +71,11 @@ class TaskController extends Controller
         return $task->setStatus(constant(Task::class . '::' . $status));
     }
 
-    private function syncTaskWithTags(Task $task, array $tags)
+    private function initializeTaskTags(Task $task, Request $request)
     {
-        $task->tags()->sync($tags);
-        return $task;
+        if (isset($request->tags)) {
+            $task->syncTags($request->tags);
+        }
     }
 
     private function setCategoryId(Request $request)
