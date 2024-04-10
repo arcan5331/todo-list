@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -19,6 +20,12 @@ class StoreTaskRequest extends FormRequest
             'tags.*' => Rule::exists(Tag::class, 'id')
                 ->where('user_id', $this->user()->id)
                 ->whereNull('deleted_at'),
+            'category_id' => [
+                'nullable',
+                Rule::exists(Category::class, 'id')
+                    ->whereNull('deleted_at')
+                    ->where('user_id', $this->user()->id)
+            ],
         ];
     }
 
