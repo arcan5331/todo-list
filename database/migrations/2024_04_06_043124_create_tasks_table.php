@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->enum('status', ['todo', 'over_du', 'doing', 'done'])->default('todo');
             $table->date('due_date');
             $table->foreignIdFor(\App\Models\User::class);
+            $table->foreignIdFor(\App\Models\Category::class);
             $table->timestamps();
             $table->softDeletes();
         });

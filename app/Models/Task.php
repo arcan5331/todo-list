@@ -21,6 +21,7 @@ class Task extends Model
         'title',
         'description',
         'due_date',
+        'category_id',
     ];
 
     protected $casts = [
@@ -37,6 +38,11 @@ class Task extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function setStatus($status): static

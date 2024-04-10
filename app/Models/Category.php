@@ -31,4 +31,9 @@ class Category extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
 }
