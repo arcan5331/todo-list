@@ -19,15 +19,11 @@ class CategoryController extends Controller
     {
         $this->authorize('create', Category::class);
 
-        if (!isset($request->category_id)) {
-            $categoryId = $this->getUserRootCategory(auth()->user())->id;
-        } else {
-            $categoryId = $request->category_id;
-        }
+        $this->initializeCategoryIdIfNotSet($request);
 
         return auth()->user()->categories()->create([
             'name' => $request->input('name'),
-            'category_id' => $categoryId,
+            'category_id' => $request->input('category_id'),
         ]);
     }
 
@@ -42,15 +38,11 @@ class CategoryController extends Controller
     {
         $this->authorize('update', $category);
 
-        if (!isset($request->category_id)) {
-            $parentCategoryId = $this->getUserRootCategory(auth()->user())->id;
-        } else {
-            $parentCategoryId = $request->category_id;
-        }
+        $this->initializeCategoryIdIfNotSet($request);
 
         $category->update([
             'name' => $request->input('name'),
-            'category_id' => $parentCategoryId,
+            'category_id' => $request->input('category_id'),
         ]);
 
         return $category->refresh();
@@ -85,6 +77,15 @@ class CategoryController extends Controller
         $user->categories()->create([
             'name' => 'tag',
         ]);
+    }
+
+    private function initializeCategoryIdIfNotSet(Request $request)
+    {
+        if (!isset($request->category_id)) {
+            $request->merge([
+                'category_id' => $this->getUserRootCategory(auth()->user())->id,
+            ]);
+        }
     }
 
 }
