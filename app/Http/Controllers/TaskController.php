@@ -28,9 +28,7 @@ class TaskController extends Controller
         $this->initializeCategoryIdIfNotSet($request);
 
         $task = auth()->user()->tasks()->create($request->only(['title', 'description', 'due_date', 'category_id']));
-        if (isset($request->status)) {
-            $this->setTaskStatus($task, $request->status);
-        }
+        $this->initializeTaskStatus($task, $request);
 
 
         $this->initializeTaskTags($task, $request);
@@ -46,9 +44,7 @@ class TaskController extends Controller
         $this->initializeCategoryIdIfNotSet($request);
 
         $task->update($request->only(['title', 'description', 'due_date', 'category_id']));
-        if (isset($request->status)) {
-            $this->setTaskStatus($task, $request->status);
-        }
+        $this->initializeTaskStatus($task, $request);
 
         $this->initializeTaskTags($task, $request);
 
@@ -64,6 +60,12 @@ class TaskController extends Controller
         return response()->noContent();
     }
 
+    private function initializeTaskStatus(Task $task, Request $request)
+    {
+        if (isset($request->status)) {
+            $this->setTaskStatus($task, $request->status);
+        }
+    }
 
     private function setTaskStatus(Task $task, $status)
     {
