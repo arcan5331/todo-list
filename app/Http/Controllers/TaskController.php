@@ -24,9 +24,8 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         $this->authorize('create', Task::class);
-        if (!isset($request->category_id)) {
-            $this->setCategoryId($request);
-        }
+
+        $this->initializeCategoryIdIfNotSet($request);
 
         $task = auth()->user()->tasks()->create($request->only(['title', 'description', 'due_date', 'category_id']));
         if (isset($request->status)) {
@@ -44,9 +43,8 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task)
     {
         $this->authorize('update', $task);
-        if (!isset($request->category_id)) {
-            $this->setCategoryId($request);
-        }
+
+        $this->initializeCategoryIdIfNotSet($request);
 
         $task->update($request->only(['title', 'description', 'due_date', 'category_id']));
         if (isset($request->status)) {
@@ -86,5 +84,12 @@ class TaskController extends Controller
     {
         $rootCategory = CategoryController::getUserRootCategory(auth()->user());
         $request->merge(['category_id' => $rootCategory->id]);
+    }
+
+    private function initializeCategoryIdIfNotSet(Request $request)
+    {
+        if (!isset($request->category_id)) {
+            $this->setCategoryId($request);
+        }
     }
 }
