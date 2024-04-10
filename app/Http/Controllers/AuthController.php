@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\LoginResource;
 use App\Models\User;
@@ -16,14 +17,10 @@ class AuthController extends Controller
         return new LoginResource($user);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
 
-        if (auth()->attempt($credentials)) {
+        if (auth()->attempt($request->validated())) {
             return new LoginResource(auth()->user());
         }
 
