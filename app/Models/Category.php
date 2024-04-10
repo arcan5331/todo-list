@@ -17,6 +17,45 @@ class Category extends Model
         'user_id',
     ];
 
+    protected static null|Category $firstDeletedNodeParent = null;
+
+    protected static function booted(): void
+    {
+        parent::booted();
+
+        static::deleting(function (Category $category) {
+
+            if (self::isTheFirstNodeInThisDeletion())
+                self::setFirstDeletedNodeParent($category->parent);
+
+            $category->tasks()->update(['category_id' => self::$firstDeletedNodeParent->id]);
+
+            $childCategories = $category->children;
+            foreach ($childCategories as $childCategory) {
+                $childCategory->delete();
+            }
+        });
+
+        static::deleted(function () {
+            self::resetFirstDeletedNodeParent();
+        });
+    }
+
+    protected static function isTheFirstNodeInThisDeletion(): bool
+    {
+        return self::$firstDeletedNodeParent === null;
+    }
+
+    protected static function resetFirstDeletedNodeParent(): void
+    {
+        self::$firstDeletedNodeParent = null;
+    }
+
+    protected static function setFirstDeletedNodeParent(Category $category): void
+    {
+        self::$firstDeletedNodeParent = $category;
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
