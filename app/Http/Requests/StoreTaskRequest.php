@@ -13,15 +13,15 @@ class StoreTaskRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'description' => 'filled',
+            'description' => 'nullable',
             'due_date' => 'required|date|after_or_equal:today',
-            'status' => 'filled|in:todo,over_due,doing,done',
+            'status' => 'nullable|in:todo,over_due,doing,done',
             'tags' => 'array|nullable',
             'tags.*' => Rule::exists(Tag::class, 'id')
                 ->where('user_id', $this->user()->id)
                 ->whereNull('deleted_at'),
             'category_id' => [
-                'filled',
+                'nullable',
                 Rule::exists(Category::class, 'id')
                     ->whereNull('deleted_at')
                     ->where('user_id', $this->user()->id)
