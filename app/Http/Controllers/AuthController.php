@@ -43,6 +43,7 @@ class AuthController extends Controller
 
     function sendEmailVerificationNotification(Request $request)
     {
-        $request->user()->sendEmailVerificationNotification();
+        if (!$request->user()->hasVerifiedEmail())
+            $request->user()->sendEmailVerificationNotification();
     }
 }
