@@ -63,4 +63,12 @@ class Task extends Model
         $this->save();
         return $this;
     }
+
+    public static function updateOverDueTasks(): void
+    {
+        Task::whereDate('due_date', '<', today())
+            ->where('status', '!=', 'done')
+            ->where('status', '!=', 'over_due')
+            ->update(['status' => 'over_due']);
+    }
 }
