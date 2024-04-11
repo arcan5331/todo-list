@@ -25,6 +25,10 @@ class Category extends Model
         'deleted_at',
     ];
 
+    protected $with = [
+        'parent'
+    ];
+
     protected static null|Category $firstDeletedNodeParent = null;
 
     protected static function booted(): void
