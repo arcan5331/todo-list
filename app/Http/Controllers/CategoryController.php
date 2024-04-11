@@ -52,9 +52,6 @@ class CategoryController extends Controller
     {
         $this->authorize('delete', $category);
 
-        if ($category->id === static::getUserRootCategory(auth()->user())->id)
-            abort(403);
-
         $category->delete();
 
         return response()->json();

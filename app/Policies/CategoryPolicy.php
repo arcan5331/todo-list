@@ -32,7 +32,8 @@ class CategoryPolicy
 
     public function delete(User $user, Category $category): bool
     {
-        return $user->id === $category->user_id;
+        return $user->id === $category->user_id
+            and !$category->isTheRootCategory();
     }
 
     public function restore(User $user, Category $category): bool
