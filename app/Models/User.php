@@ -47,6 +47,18 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
+    public function save(array $options = [])
+    {
+
+        if ($this->isDirty('email'))
+            $this->forceFill([
+                'email_verified_at' => null,
+                'email_verification_text' => null
+            ]);
+
+        return parent::save($options);
+    }
+
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
