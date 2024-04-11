@@ -18,11 +18,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-Route::apiResource('tasks', \App\Http\Controllers\TaskController::class, ['middleware' => 'auth:sanctum']);
-Route::apiResource('tags', \App\Http\Controllers\TagController::class, ['middleware' => 'auth:sanctum']);
-Route::apiResource('categories', \App\Http\Controllers\CategoryController::class, ['middleware' => 'auth:sanctum']);
-Route::apiResource('users', \App\Http\Controllers\UserController::class, ['middleware' => 'auth:sanctum']);
+Route::group(['middleware' => ['verified', 'auth:sanctum']], function () {
+    Route::apiResource('tasks', \App\Http\Controllers\TaskController::class);
+    Route::apiResource('tags', \App\Http\Controllers\TagController::class);
+    Route::apiResource('categories', \App\Http\Controllers\CategoryController::class);
+    Route::apiResource('users', \App\Http\Controllers\UserController::class);
+});
 
 Route::group([
     'prefix' => 'auth',
