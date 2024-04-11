@@ -13,7 +13,7 @@ class UpdateTaskRequest extends FormRequest
     {
         return [
             'title' => 'filled',
-            'description' => 'filled',
+            'description' => 'nullable',
             'due_date' => 'filled|date|after_or_equal:today',
             'status' => 'filled|in:todo,over_due,doing,done',
             'tags' => 'array|filled',
