@@ -6,6 +6,7 @@ use App\Http\Requests\EmailVerificationRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\LoginResource;
+use App\Http\Resources\RegisterResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class AuthController extends Controller
     {
         $user = User::create($request->validated());
         event(new Registered($user));
-        return new LoginResource($user);
+        return new RegisterResource($user);
     }
 
     public function login(LoginRequest $request)
