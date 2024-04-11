@@ -82,9 +82,11 @@ class CategoryController extends Controller
     private function initializeCategoryIdIfNotSet(Request $request)
     {
         if (!isset($request->category_id)) {
-            $request->merge([
-                'category_id' => $this->getUserRootCategory(auth()->user())->id,
-            ]);
+            $rootCategory = $this->getUserRootCategory(auth()->user());
+            if ($request->category->id != $rootCategory->id)
+                $request->merge([
+                    'category_id' => $rootCategory->id,
+                ]);
         }
     }
 
