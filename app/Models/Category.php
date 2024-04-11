@@ -17,6 +17,14 @@ class Category extends Model
         'user_id',
     ];
 
+    protected $hidden = [
+        'category_id',
+        'user_id',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     protected static null|Category $firstDeletedNodeParent = null;
 
     protected static function booted(): void
