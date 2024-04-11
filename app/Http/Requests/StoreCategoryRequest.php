@@ -18,7 +18,7 @@ class StoreCategoryRequest extends FormRequest
                     ->where('user_id', $this->user()->id)
             ],
             'category_id' => [
-                'nullable',
+                'filled',
                 Rule::exists(Category::class, 'id')
                     ->whereNull('deleted_at')
                     ->where('user_id', $this->user()->id)

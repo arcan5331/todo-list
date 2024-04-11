@@ -12,16 +12,16 @@ class UpdateTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'nullable',
-            'description' => 'nullable',
-            'due_date' => 'nullable|date|after_or_equal:today',
-            'status' => 'nullable|in:todo,over_due,doing,done',
-            'tags' => 'array|nullable',
+            'title' => 'filled',
+            'description' => 'filled',
+            'due_date' => 'filled|date|after_or_equal:today',
+            'status' => 'filled|in:todo,over_due,doing,done',
+            'tags' => 'array|filled',
             'tags.*' => Rule::exists(Tag::class, 'id')
                 ->where('user_id', $this->user()->id)
                 ->whereNull('deleted_at'),
             'category_id' => [
-                'nullable',
+                'filled',
                 Rule::exists(Category::class, 'id')
                     ->whereNull('deleted_at')
                     ->where('user_id', $this->user()->id)

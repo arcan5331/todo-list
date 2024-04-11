@@ -12,14 +12,14 @@ class UpdateCategoryRequest extends FormRequest
     {
         return [
             'name' => [
-                'nullable',
+                'filled',
                 Rule::unique(Category::class, 'name')
                     ->ignoreModel($this->category)
                     ->whereNull('deleted_at')
                     ->where('user_id', $this->user()->id)
             ],
             'category_id' => [
-                'nullable',
+                'filled',
                 Rule::prohibitedIf($this->category->category_id == null),
                 Rule::exists(Category::class, 'id')
                     ->whereNot('id',$this->category->id)

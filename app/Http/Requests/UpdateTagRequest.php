@@ -12,7 +12,7 @@ class UpdateTagRequest extends FormRequest
     {
         return [
             'name' => [
-                'required',
+                'filled',
                 Rule::unique(Tag::class)
                     ->ignoreModel($this->tag)
                     ->where('user_id', $this->user()->id)
