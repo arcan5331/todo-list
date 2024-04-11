@@ -53,6 +53,11 @@ class Category extends Model
         });
     }
 
+    public function isTheRootCategory(): bool
+    {
+        return !$this->category_id;
+    }
+
     protected static function isTheFirstNodeInThisDeletion(): bool
     {
         return self::$firstDeletedNodeParent === null;
